@@ -378,13 +378,7 @@
                     <button class="duration-btn" data-duration="12" data-discount="15">1 An (-15%)</button>
                 </div>
             </div>
-             
-             <!-- Duration Buttons (Newly Added) -->
-            <div class="duration-buttons">
-                <button class="duration-btn active" data-duration="1">1 Mois</button>
-                <button class="duration-btn" data-duration="6">6 Mois</button>
-                <button class="duration-btn" data-duration="12">1 An</button>
-            </div>
+  
         </div>
     </div>
 
@@ -401,7 +395,7 @@
             const videoInput = document.getElementById('videos');
             const thumbnailInput = document.getElementById('thumbnails');
             const visualInput = document.getElementById('visuals');
-            const durationSelect = document.getElementById('duration');
+            const durationButtons = document.querySelectorAll('.duration-btn');
             const totalPriceElement = document.getElementById('totalPrice');
             const durationDetailsElement = document.getElementById('durationDetails');
             const monthlyCostElement = document.getElementById('monthlyCostDetails');
@@ -410,10 +404,9 @@
                 const numVideos = parseInt(videoInput.value) || 0;
                 const numThumbnails = parseInt(thumbnailInput.value) || 0;
                 const numVisuals = parseInt(visualInput.value) || 0;
-                
-                const selectedOption = durationSelect.options[durationSelect.selectedIndex];
-                const duration = parseInt(selectedOption.value);
-                const discountPercentage = parseInt(selectedOption.dataset.discount);
+                const activeButton = document.querySelector('.duration-btn.active');
+                const duration = parseInt(activeButton.dataset.duration);
+                const discountPercentage = parseInt(activeButton.dataset.discount);
 
                 // Calculate the base monthly cost
                 const monthlyCost = (numVideos * prices.video) + (numThumbnails * prices.thumbnail) + (numVisuals * prices.visual);
@@ -446,21 +439,18 @@
             }
 
             // Add event listeners to update the price in real-time
-            [videoInput, thumbnailInput, visualInput, durationSelect].forEach(element => {
+            [videoInput, thumbnailInput, visualInput].forEach(element => {
                 element.addEventListener('input', calculateTotal);
             });
 
-            // Duration buttons functionality
-            const durationButtons = document.querySelectorAll('.duration-btn');
+            // Add click event listeners to duration buttons
             durationButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     // Remove active class from all buttons
                     durationButtons.forEach(btn => btn.classList.remove('active'));
-                    // Add active class to the clicked button
+                    // Add active class to clicked button
                     button.classList.add('active');
-                    // Update the select element value
-                    durationSelect.value = button.getAttribute('data-duration');
-                    // Recalculate the total price
+                    // Recalculate total
                     calculateTotal();
                 });
             });

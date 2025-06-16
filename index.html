@@ -385,15 +385,15 @@
                 
                 // Format the total price with spaces as thousands separators
                 const formattedTotalPrice = finalCost.toLocaleString('fr-FR');
-                
+                totalPriceElement.textContent = `${formattedTotalPrice} CFA`;
+
                 // Calculate and display the effective monthly cost for discounted plans
                 if (duration > 1 && finalCost > 0) {
                     const effectiveMonthlyCost = finalCost / duration;
-                    monthlyCostElement.textContent = `soit ${formattedTotalPrice} CFA pour ${duration} mois`;
+                    monthlyCostElement.textContent = `soit ${effectiveMonthlyCost.toLocaleString('fr-FR')} CFA/mois`;
                 } else {
                     monthlyCostElement.textContent = ''; // Clear if not applicable
                 }
-                totalPriceElement.textContent = `${effectiveMonthlyCost.toLocaleString('fr-FR')} CFA/mois`;
                 
                 // Update the duration details text
                 let durationText = `Pour ${duration} mois`;

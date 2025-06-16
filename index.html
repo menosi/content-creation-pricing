@@ -236,6 +236,42 @@
             margin-top: 0.5rem;
         }
         
+        /* Duration Buttons */
+        .duration-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .duration-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            background-color: var(--card-background);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .duration-btn:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        .duration-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .duration-buttons {
+                flex-direction: column;
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .calculator-layout {
@@ -331,17 +367,23 @@
                      <p id="monthlyCostDetails"></p>
                      <p id="durationDetails">Pour 1 mois</p>
                 </div>
-            </div>
-             <div class="form-group" style="margin-top: 2rem;">
-                <label for="duration">
+            </div>             <div class="form-group" style="margin-top: 2rem;">
+                <label>
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path></svg>
                     Choisissez la durée de votre engagement
                 </label>
-                <select id="duration">
-                    <option value="1" data-discount="0">1 Mois (Pas de réduction)</option>
-                    <option value="6" data-discount="10">6 Mois (Réduction de 10%)</option>
-                    <option value="12" data-discount="15">1 An (Réduction de 15%)</option>
-                </select>
+                <div class="duration-buttons">
+                    <button class="duration-btn active" data-duration="1" data-discount="0">1 Mois</button>
+                    <button class="duration-btn" data-duration="6" data-discount="10">6 Mois (-10%)</button>
+                    <button class="duration-btn" data-duration="12" data-discount="15">1 An (-15%)</button>
+                </div>
+            </div>
+             
+             <!-- Duration Buttons (Newly Added) -->
+            <div class="duration-buttons">
+                <button class="duration-btn active" data-duration="1">1 Mois</button>
+                <button class="duration-btn" data-duration="6">6 Mois</button>
+                <button class="duration-btn" data-duration="12">1 An</button>
             </div>
         </div>
     </div>
@@ -406,6 +448,21 @@
             // Add event listeners to update the price in real-time
             [videoInput, thumbnailInput, visualInput, durationSelect].forEach(element => {
                 element.addEventListener('input', calculateTotal);
+            });
+
+            // Duration buttons functionality
+            const durationButtons = document.querySelectorAll('.duration-btn');
+            durationButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    durationButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to the clicked button
+                    button.classList.add('active');
+                    // Update the select element value
+                    durationSelect.value = button.getAttribute('data-duration');
+                    // Recalculate the total price
+                    calculateTotal();
+                });
             });
 
             // Initial calculation on page load

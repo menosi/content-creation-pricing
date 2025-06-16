@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grille Tarifaire - menosi.net</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for easy theme management */
+        :root {
+            --primary-color: #007bff;
+            --primary-hover-color: #0056b3;
+            --accent-color: #20c997; /* New accent color */
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #343a40;
+            --heading-color: #212529;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        /* General Body Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin: 0;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+        }
+
+        /* Pricing Grid Layout */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Pricing Card Styles */
+        .pricing-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Using accent color for the second card */
+        .pricing-card.pack-base-card {
+             border-top-color: var(--accent-color);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .pricing-card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-card p {
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pricing-card li {
+            padding: 0.8rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.05rem;
+        }
+
+        .pricing-card li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-card .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .pack-base-card .price {
+            color: var(--accent-color);
+        }
+        
+        /* Custom Calculator Section */
+        .calculator-section {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+        }
+
+        .calculator-section h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--heading-color);
+        }
+        
+        .calculator-section .subtitle {
+            text-align: center;
+            color: var(--secondary-color);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .calculator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .form-group label svg {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #fdfdff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+        
+        /* Total Cost Display */
+        .total-cost-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, var(--primary-color), var(--primary-hover-color));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .total-cost-wrapper h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        #totalPrice {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+        
+        #monthlyCostDetails {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: -0.5rem;
+            margin-bottom: 0.75rem;
+            min-height: 20px; /* Reserve space to prevent layout shift */
+        }
+        
+        #durationDetails {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .calculator-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .total-cost-wrapper {
+                margin-top: 2rem;
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+             header h1 {
+                font-size: 2.2rem;
+            }
+             .calculator-section h2 {
+                 font-size: 1.8rem;
+             }
+            #totalPrice {
+                font-size: 2.8rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Nos Tarifs Flexibles</h1>
+            <p>Choisissez une prestation unique ou créez votre pack sur-mesure pour un partenariat à long terme.</p>
+        </header>
+
+        <!-- Pricing Grid -->
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h2>Tarifs Uniques</h2>
+                <p>Pour vos besoins ponctuels.</p>
+                <ul>
+                    <li>Vidéo unique <span class="price">15 000 CFA</span></li>
+                    <li>Miniature unique <span class="price">3 500 CFA</span></li>
+                    <li>Visuel unique <span class="price">5 000 CFA</span></li>
+                </ul>
+            </div>
+            <div class="pricing-card pack-base-card">
+                <h2>Base Pack Mensuel</h2>
+                <p>Les tarifs réduits pour le calcul de votre pack.</p>
+                <ul>
+                    <li>Par vidéo <span class="price">10 000 CFA</span></li>
+                    <li>Par miniature <span class="price">2 500 CFA</span></li>
+                    <li>Par visuel <span class="price">3 500 CFA</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Custom Pack Calculator -->
+        <div class="calculator-section">
+            <h2>Composez Votre Pack Idéal</h2>
+            <p class="subtitle">Sélectionnez vos besoins mensuels, choisissez votre durée d'engagement et découvrez instantanément votre tarif personnalisé avec les réductions appliquées.</p>
+            
+            <div class="calculator-layout">
+                <div class="calculator-form">
+                    <div class="form-group">
+                        <label for="videos">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+                            Nombre de vidéos
+                        </label>
+                        <input type="number" id="videos" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="thumbnails">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            Nombre de miniatures
+                        </label>
+                        <input type="number" id="thumbnails" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="visuals">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                            Nombre de visuels
+                        </label>
+                        <input type="number" id="visuals" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="total-cost-wrapper">
+                     <h3>Coût Total Estimé</h3>
+                     <p id="totalPrice">0 CFA</p>
+                     <p id="monthlyCostDetails"></p>
+                     <p id="durationDetails">Pour 1 mois</p>
+                </div>
+            </div>
+             <div class="form-group" style="margin-top: 2rem;">
+                <label for="duration">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path></svg>
+                    Choisissez la durée de votre engagement
+                </label>
+                <select id="duration">
+                    <option value="1" data-discount="0">1 Mois (Pas de réduction)</option>
+                    <option value="6" data-discount="15">6 Mois (Réduction de 15%)</option>
+                    <option value="12" data-discount="20">1 An (Réduction de 20%)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Base prices for calculation (from the monthly pack)
+            const prices = {
+                video: 10000,
+                thumbnail: 2500,
+                visual: 3500
+            };
+
+            // Form elements
+            const videoInput = document.getElementById('videos');
+            const thumbnailInput = document.getElementById('thumbnails');
+            const visualInput = document.getElementById('visuals');
+            const durationSelect = document.getElementById('duration');
+            const totalPriceElement = document.getElementById('totalPrice');
+            const durationDetailsElement = document.getElementById('durationDetails');
+            const monthlyCostElement = document.getElementById('monthlyCostDetails');
+            
+            function calculateTotal() {
+                const numVideos = parseInt(videoInput.value) || 0;
+                const numThumbnails = parseInt(thumbnailInput.value) || 0;
+                const numVisuals = parseInt(visualInput.value) || 0;
+                
+                const selectedOption = durationSelect.options[durationSelect.selectedIndex];
+                const duration = parseInt(selectedOption.value);
+                const discountPercentage = parseInt(selectedOption.dataset.discount);
+
+                // Calculate the base monthly cost
+                const monthlyCost = (numVideos * prices.video) + (numThumbnails * prices.thumbnail) + (numVisuals * prices.visual);
+                
+                // Calculate the total cost for the entire duration BEFORE discount
+                const totalBaseCost = monthlyCost * duration;
+
+                // Apply the discount
+                const discountAmount = totalBaseCost * (discountPercentage / 100);
+                const finalCost = totalBaseCost - discountAmount;
+                
+                // Format the total price with spaces as thousands separators
+                const formattedTotalPrice = finalCost.toLocaleString('fr-FR');
+                totalPriceElement.textContent = `${formattedTotalPrice} CFA`;
+
+                // Calculate and display the effective monthly cost for discounted plans
+                if (duration > 1 && finalCost > 0) {
+                    const effectiveMonthlyCost = finalCost / duration;
+                    monthlyCostElement.textContent = `soit ${effectiveMonthlyCost.toLocaleString('fr-FR')} CFA/mois`;
+                } else {
+                    monthlyCostElement.textContent = ''; // Clear if not applicable
+                }
+                
+                // Update the duration details text
+                let durationText = `Pour ${duration} mois`;
+                if(duration === 12) durationText = "Pour 1 an";
+                if(duration === 1) durationText = "Pour 1 mois";
+                
+                durationDetailsElement.textContent = `${durationText}${discountPercentage > 0 ? ` (avec ${discountPercentage}% de réduction)` : ''}`;
+            }
+
+            // Add event listeners to update the price in real-time
+            [videoInput, thumbnailInput, visualInput, durationSelect].forEach(element => {
+                element.addEventListener('input', calculateTotal);
+            });
+
+            // Initial calculation on page load
+            calculateTotal();
+        });
+    </script>
+</body>
+</html>
